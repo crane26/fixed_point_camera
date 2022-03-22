@@ -7,7 +7,7 @@ import requests
 
 
 shutter_numb = 0
-photo_dir = os.path.expanduser('~/Desktop/tsuruM1/fixed_point_camera/picture')
+photo_dir = os.path.expanduser('your_dir')
 
 camera = picamera.PiCamera()
 # camera.hflip = True
@@ -71,7 +71,7 @@ def shutter():
 
     # send image to LINE
     url = "https://notify-api.line.me/api/notify"
-    token = "F2am4nhtK6UOMbLBmKLcEuMpiI8owiE47ytmCWzkg7z"
+    token = "your_LINE_token"
     headers = {"Authorization": "Bearer " + token}
 
     message = "ラズパイから写真を送信"
