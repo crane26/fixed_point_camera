@@ -1,0 +1,46 @@
+連続撮影コマンド
+$ raspistill -w 600 -h 315 -q 100 -t 18000000 -tl 60000 -vf -hf -o %d.jpg
+-w 1280 -h 800 ：撮影する写真サイズ
+-q 30 ：jpg画像の品質（０〜100）
+-t 43200000 ：トータルの撮影時間・・・43200000ms（12時間）の間撮影
+-tl 3000 ：撮影間隔・・・3000ms（3秒）ごとに撮影
+-o %d.jpg ：連番でjpgファイルを出力する
+-vf -hf　：上下左右の反転
+
+
+連番写真をMP4動画に変換
+$ ffmpeg -f image2 -r 10 -i %d.jpg -r 10 -an -vcodec libx264 -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" lab-landscape220315.mp4
+https://qiita.com/riocampos/items/2f4fe927b5cf99aff767
+
+-f image2
+入力が jpeg 画像であることを明示。
+
+-r 15（一つ目）
+入力 静止画の更新を毎秒15フレームに指定。ここの数字を変更すればタイムラプス動画のフレームレートを変更できる。
+
+-i source%04d.jpg
+入力画像のファイル名形式を指定。 %04d は0埋めされた4桁数字（0000〜9999）の意味。
+
+-r 15（二つ目）
+出力 動画を毎秒15フレームに指定。入力フレーム数の整数倍であるべき（だと思う）。
+
+-an
+オーディオ無し。
+
+-vcodec libx264
+mp4 フォーマットでエンコーダを H.264 に指定。
+
+-pix_fmt yuv420p
+画像形式を YUV 形式で YUV420 に指定。jpeg をそのまま動画にすると YUV422 になり、Mac の QuickTime で
+再生できなかった。一般的な変換である YUV420 に変換した。
+-vf format=yuv420p という書式もある。どちらが好ましいのか分からなかった。
+（2019/1/10追記）が、Encode/H.264 – FFmpeg に -pix_fmt yuv420p がエイリアスだ、
+と書いてあるので -vf format=yuv420p がいちおう正式なんでしょうね。とはいえ -vf もFFmpegのドキュメントに
+ This is an alias for -filter:v と書いてあるので…まあ書きやすくて覚えやすいほうがいいよな。
+-pix_fmt yuv420p 使おう、うん。
+
+video.mp4
+出力ファイル名。 mp4 フォーマット。
+
+
+
