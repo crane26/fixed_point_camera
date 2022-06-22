@@ -1,0 +1,5 @@
+0 * * * * /usr/bin/python3 /home/pi/Desktop/tsuruM1/fixed_point_camera/send_img2line.py
+・crontab -eでnanoを開く
+・上記のcronを書き込む
+・ctrl+oで書き込み、Enter
+・ctrl+xで終了
